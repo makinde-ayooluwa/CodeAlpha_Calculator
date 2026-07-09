@@ -4,11 +4,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title></title>
+  <title>CodeAlpha Calculator Project</title>
+  <style type="text/css">
+    .calculator{
+      width:100%;
+      max-width: 365px;
+      justify-self: center;
+      box-shadow: 0 1px 4px rgb(0,0,0);
+      padding: 10px;
+      border-radius: 20px;
+    }
+    .calculator-content{
+      display: grid;
+    }
+    .result-display{
+      width: auto;
+      padding: 25px;
+      border: 1px solid black;
+      border-radius: 20px;
+    }
+  </style>
 </head>
 
 <body>
-  Hello World
+  <div class="calculator">
+    <div class="calculator-content">
+      <div id="result-display" class="result-display">
+        <div id="calculation">
+          
+        </div>
+        <div id="live-result">
+          
+        </div>
+      </div>
+      <div class="buttons">
+        
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
