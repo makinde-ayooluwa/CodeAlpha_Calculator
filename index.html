@@ -6,22 +6,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CodeAlpha Calculator Project</title>
   <style type="text/css">
-    .calculator{
-      width:100%;
+    .calculator {
+      width: 100%;
       max-width: 365px;
       justify-self: center;
-      box-shadow: 0 1px 4px rgb(0,0,0);
+      box-shadow: 0 1px 4px rgb(0, 0, 0);
       padding: 10px;
       border-radius: 20px;
     }
-    .calculator-content{
+    
+    .calculator-content {
       display: grid;
     }
-    .result-display{
+    
+    .result-display {
       width: auto;
       padding: 25px;
       border: 1px solid black;
       border-radius: 20px;
+      height: 40px;
+    }
+    
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 40px 30px;
+      margin-top: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    button {
+      height: 60px;
+      width: 60px;
+      border-radius: 10px;
+      border: none;
+      background: gray;
+      color: white;
+      font-size: 20px;
     }
   </style>
 </head>
@@ -29,19 +52,138 @@
 <body>
   <div class="calculator">
     <div class="calculator-content">
-      <div id="result-display" class="result-display">
+      <div id="result-display" class="result-display" style="text-align: end;">
         <div id="calculation">
           
         </div>
-        <div id="live-result">
+        <div id="live-result" style="font-size: 30px;">
           
         </div>
       </div>
+      <hr />
       <div class="buttons">
-        
+        <button>9</button>
+        <button>8</button>
+        <button>7</button>
+        <button>=</button>
+        <button>6</button>
+        <button>5</button>
+        <button>4</button>
+        <button>/</button>
+        <button>3</button>
+        <button>2</button>
+        <button>1</button>
+        <button>*</button>
+        <button>C</button>
+        <button>DEL</button>
+        <button>.</button>
+        <button>+</button>
+        <button style="width: 75%;">0</button>
       </div>
     </div>
   </div>
+  <script>
+    const inputDisplay = document.getElementById("calculation");
+    const resultDisplay = document.getElementById("live-result");
+    const buttons = document.querySelectorAll("button");
+    
+    let input = "";
+    
+    function updateDisplay() {
+      inputDisplay.textContent = input;
+      
+      if (input === "") {
+        resultDisplay.textContent = "";
+        return;
+      }
+      
+      try {
+        resultDisplay.textContent = eval(input);
+      } catch {
+        resultDisplay.textContent = "";
+      }
+    }
+    
+    buttons.forEach(button => {
+      button.addEventListener("click", () => {
+        const value = button.textContent;
+        
+        // Numbers
+        if (!isNaN(value)) {
+          if (input === "0") {
+            input = value;
+          } else {
+            input += value;
+          }
+          
+          updateDisplay();
+          return;
+        }
+        
+        // Decimal
+        if (value === ".") {
+          const lastNumber = input.split(/[+\-*/]/).pop();
+          
+          if (!lastNumber.includes(".")) {
+            if (
+              input === "" ||
+              "+-*/".includes(input.slice(-1))
+            ) {
+              input += "0.";
+            } else {
+              input += ".";
+            }
+          }
+          
+          updateDisplay();
+          return;
+        }
+        
+        // Operators
+        if ("+-*/".includes(value)) {
+          if (input === "") return;
+          
+          if ("+-*/".includes(input.slice(-1))) {
+            input = input.slice(0, -1) + value;
+          } else {
+            input += value;
+          }
+          
+          updateDisplay();
+          return;
+        }
+        
+        // Equal
+        if (value === "=") {
+          try {
+            input = eval(input).toString();
+          } catch {
+            input = "";
+            resultDisplay.textContent = "Error";
+          }
+          
+          updateDisplay();
+          return;
+        }
+        
+        // Clear
+        if (value === "C") {
+          input = "";
+          updateDisplay();
+          return;
+        }
+        
+        // Delete
+        if (value === "DEL") {
+          input = input.slice(0, -1);
+          updateDisplay();
+          return;
+        }
+      });
+    });
+    
+    updateDisplay();
+  </script>
 </body>
 
 </html>
